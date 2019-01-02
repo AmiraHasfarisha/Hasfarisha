@@ -12,7 +12,9 @@
 
 void load_menu(void);
 void tcpn(void);
-void tcpi(void);
+void tcpvv(void);
+void tcpem0(void);
+void tcpd(void);
 void forks(void);
 void rest(void); 
 int main()
@@ -55,11 +57,16 @@ send(newSocket, buffer, strlen(buffer), 0);
         printf("\n");
         printf("2. Fork\n");
         printf("\n");
-        printf("3. Tcpdump -i eth0\n");
+        printf("3. Tcpdump -vv\n");
         printf("\n");
         printf("4. Tcpdump -nn\n");
         printf("\n");
-        printf("5. Exit\n");
+        printf("5. Tcpdump -D\n");
+        printf("\n");
+        printf("6. Tcpdump em0\n");
+        printf("\n");
+
+        printf("7. Exit\n");
         scanf("%d",&choice);
  
         switch(choice)
@@ -71,13 +78,20 @@ send(newSocket, buffer, strlen(buffer), 0);
             case 2: forks();
                 break;
          
-            case 3: tcpi();
+            case 3: tcpvv();
                 break;
 
             case 4: tcpn ();
                 break;
+
+            case 5: tcpd ();
+                break;
+
+            case 6: tcpem0 ();
+                break;
+
                     
-            case 5: 
+            case 7: 
 			printf("\n");
 			printf("Quitting program!\n");
                 exit(0);
@@ -87,7 +101,7 @@ send(newSocket, buffer, strlen(buffer), 0);
 			printf("Invalid choice!\n");
                 break;
         }
-    } while (choice != 5);   
+    } while (choice != 7);   
 }
 
 void tcpn(void)
@@ -96,7 +110,6 @@ int ch;
 int n;
 int ret;
 
-printf("tcpdump -nn:%d\n");
     while ((ch = getchar()) != '\n' && ch != EOF) ;
  
     printf("\n");
@@ -108,12 +121,11 @@ printf("tcpdump -nn:%d\n");
     return;
 }
 
-void tcpi(void)
+void tcpvv(void)
 {
 int ch;
 int ret;
 
-printf("tcpdump -i udp:%d\n");
     while ((ch = getchar()) != '\n' && ch != EOF) ;
  
     printf("\n");
@@ -124,6 +136,38 @@ printf("tcpdump -i udp:%d\n");
     ret = execl("/usr/sbin/tcpdump","tcpdump","-vv", NULL);
 
 return;
+}
+void tcpem0(void)
+{
+int ch;
+int n;
+int ret;
+
+    while ((ch = getchar()) != '\n' && ch != EOF) ;
+
+    printf("\n");
+    printf("\n\nFor stopping the program 'ctrl + c'. Press ENTER to continue.");
+    while ((ch = getchar()) != '\n' && ch != EOF);
+
+    ret = execl("/usr/sbin/tcpdump","tcpdump","-n", "-i", "em0", NULL);
+
+    return;
+}
+void tcpd(void)
+{
+int ch;
+int n;
+int ret;
+
+    while ((ch = getchar()) != '\n' && ch != EOF) ;
+
+    printf("\n");
+    printf("\n\nFor stopping the program 'ctrl + c'. Press ENTER to continue.");
+    while ((ch = getchar()) != '\n' && ch != EOF);
+
+    ret = execl("/usr/sbin/tcpdump","tcpdump","-D", NULL);
+
+    return;
 }
 
 void forks(void)
